@@ -38,7 +38,7 @@ function showTodo(filter) {
         });
     }
 
-    taskBox.innerHTML = liTag || `<span>You don't have any task here</span>`;
+    taskBox.innerHTML = liTag || `<span>Voce não possui compras pendentes</span>`;
     let checkTask = taskBox.querySelectorAll(".task");
     !checkTask.length ? clearAll.classList.remove("active") : clearAll.classList.add("active");
     taskBox.offsetHeight >= 300 ? taskBox.classList.add("overflow") : taskBox.classList.remove("overflow");
@@ -46,8 +46,6 @@ function showTodo(filter) {
 }
 showTodo("all");
 
-//i have added a task before tutorial so that shows here for test
-// if you don't have any tasks no problem it isn't bug
 
 function showMenu(selectedTask) {
     let menuDiv = selectedTask.parentElement.lastElementChild;
