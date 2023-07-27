@@ -1,23 +1,32 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="style.css">
-    <title>Login</title>
-</head>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="telalogin.css" />
 
-<body>
-    <div class="Login">
-        <h1>Login</h1>
-        <input type="text" placeholder="Nome">
-        <br><br>
-        <input type="password" placeholder="Senha">
-        <br><br>
-        <button>Entrar</button>
-        <br><br>
-    </div>
-    </div>
-</body>
+    <title>Login</title>
+  </head>
+  <body>
+    <main class="login">
+      <form class="container">
+        <h1 class="headline">Lista de compras</h1>        
+        <div class="form">
+          <label class="label-email" for="email">E-mail</label>
+          <i class="bx bxs-user"></i>
+          <input class="input-email" type="email" id="email" placeholder="Digite seu email:" autocomplete="off">
+  
+          <label class="label-password" for="password">Senha</label>
+          <i class="bx bxs-key"></i>
+          <input class="input-password" type="password" id="password" placeholder="Digite sua senha:">
+          <br>
+          <input class="button" type="submit" value="Login">
+          <p>Ainda nao possui conta?<a href="telaCadastro.html">Criar conta</a></p>
+
+       </div>
+      </form>
+    </main>
+  </body>
 </html>

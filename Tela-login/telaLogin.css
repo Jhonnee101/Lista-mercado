@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  
+  .login {
+    height: 100vh;
+    background: rgb(57,7,98);
+    background: linear-gradient(90deg, rgba(57,7,98,1) 37%, rgba(11,115,148,1) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px 0 #00000020;
+  }
+  
+  .headline {
+    font-size: 30px;
+    font-weight: 600;
+    color: #333333;
+  }
+  
+  .subheadline {
+    font-size: 14px;
+    font-weight: 400;
+    color: #666;
+  }
+  
+  .form {
+    width: 256px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 16px;
+  }
+  
+  .input-email {
+    margin-bottom: 8px;
+    width: 100%;
+    padding: 8px 0 8px 32px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+  }
+  
+  .input-password {
+    width: 100%;
+    padding: 8px 0 8px 32px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+  }
+  
+  .label-email {
+    margin: 0 0 -12px 0;
+    color: #333333;
+    font-weight: 600;
+  }
+  
+  .label-password {
+    margin: 0 0 -12px 0;
+    color: #333333;
+    font-weight: 600;
+  }
+  
+  .form i {
+    color: #999999;
+    font-size: 16px;
+    transform: translateX(10px) translateY(28px); 
+  }
+  
+  .input-email::placeholder {
+    font-size: 12px;
+    color: #999999;
+  }
+  
+  .input-password::placeholder {
+    font-size: 12px;
+    color: #999999;
+  }
+  
+  .input-email:focus {
+    border: 1px solid #2676EF;
+  }
+  
+  .input-password:focus {
+    border: 1px solid #2676EF;
+  }
+  
+  .button {
+    width: 100%;
+    border-radius: 4px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #2676EF, #40A9F4);
+    color: #ffffff;
+    padding: 8px;
+    cursor: pointer;
+  }
+
+p{
+  color: #04204b;
+}
+
+a{
+  color: #2676EF;
+  text-decoration: none;
+}
