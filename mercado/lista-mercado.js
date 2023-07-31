@@ -1,11 +1,19 @@
-const taskInput = document.querySelector(".task-input input"),
-  filters = document.querySelectorAll(".filters span"),
-  clearAll = document.querySelector(".clear-btn"),
-  taskBox = document.querySelector(".task-box");
+const taskInput = document.querySelector(".task-input input")
+const filters = document.querySelectorAll(".filters span")
+const clearAll = document.querySelector(".clear-btn")
+const taskBox = document.querySelector(".task-box")
 
-let editId,
-  isEditTask = false,
-  todos = JSON.parse(localStorage.getItem("todo-list"));
+let todos = JSON.parse(localStorage.getItem("todo-list"));
+
+window.addEventListener('load', () => {
+  showTodo("all");
+})
+
+clearAll.addEventListener("click", () => {
+  todos.splice(0, todos.length);
+  localStorage.setItem("todo-list", JSON.stringify(todos));
+  showTodo();
+});
 
 filters.forEach(btn => {
   btn.addEventListener("click", () => {
@@ -15,41 +23,59 @@ filters.forEach(btn => {
   });
 });
 
+taskInput.addEventListener("keyup", async (e) => {
+  let productName = taskInput.value.trim();
+  if (e.key == "Enter" && productName) {
+    await createTodo(productName)
+    taskInput.value = "";
+    localStorage.setItem("todo-list", JSON.stringify(todos));
+    showTodo(document.querySelector("span.active").id);
+  }
+});
+
 async function showTodo(filter) {
   todos = await listTodos()
-  let liTag = "";
-  if (todos) {
-    todos.forEach((todo) => {
-      const id = todo.id
-      let completed = todo.status == "completed" ? "checked" : "";
-      if (filter == todo.status || filter == "all") {
-        liTag += `<li class="task">
-                    <label for="${id}">
-                        <input onclick="updateStatus(this)" type="checkbox" id="${id}" ${completed}>
-                        <p class="${completed}">${todo.name}</p>
-                    </label>
-                    <div class="settings">
-                        <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
-                        <ul class="task-menu">
-                            <li onclick='editTask(${id}, "${todo.name}")'><i class="uil uil-pen"></i>Editar</li>
-                            <li onclick='deleteTask(${id}, "${filter}")'><i class="uil uil-trash"></i>Deletar</li>
-                        </ul>
-                    </div>
-                </li>`;
-      }
-    });
+  if (!todos || Array.isArray(todos) && todos.length === 0) {
+    taskBox.innerHTML = '<span>Voce não possui compras pendentes</span>';
+    return
   }
-
-  taskBox.innerHTML = liTag || `<span>Voce não possui compras pendentes</span>`;
+  const liTags = todos.map(todo => {
+    const id = todo.id
+    let completed = todo.status == "completed" ? "checked" : "";
+    if (filter == todo.status || filter == "all") {
+      return `<li class="task">
+                <label for="${id}">
+                    <input onclick="updateStatus(this)" type="checkbox" id="${id}" ${completed}>
+                    <p class="${completed}">${todo.name}</p>
+                </label>
+                  <div class="settings">
+                      <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
+                      <ul class="task-menu">
+                          <li onclick='deleteTask(${id}, "${filter}")'><i class="uil uil-trash"></i>Deletar</li>
+                      </ul>
+                  </div>
+              </li>`;
+    }
+  })
+  taskBox.innerHTML = liTags.join('')
   let checkTask = taskBox.querySelectorAll(".task");
   !checkTask.length ? clearAll.classList.remove("active") : clearAll.classList.add("active");
   taskBox.offsetHeight >= 300 ? taskBox.classList.add("overflow") : taskBox.classList.remove("overflow");
-
 }
-showTodo("all");
+
+async function createTodo(productName) {
+  await fetch('http://localhost:3000/product', {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({ productName })
+  })
+}
 
 async function listTodos() {
-  const response = await fetch('http://localhost:3000/product/list')
+  const response = await fetch('http://localhost:3000/products')
   const products = await response.json()
   return products.map((product) => ({
     name: product.productName,
@@ -79,16 +105,7 @@ function updateStatus(selectedTask) {
   localStorage.setItem("todo-list", JSON.stringify(todos))
 }
 
-function editTask(taskId, textName) {
-  editId = taskId;
-  isEditTask = true;
-  taskInput.value = textName;
-  taskInput.focus();
-  taskInput.classList.add("active");
-}
-
 async function deleteTask(deleteId, filter) {
-  isEditTask = false;
   await fetch(`http://localhost:3000/product/${deleteId}`, {
     method: 'DELETE',
   })
@@ -96,27 +113,3 @@ async function deleteTask(deleteId, filter) {
   localStorage.setItem("todo-list", JSON.stringify(todos));
   showTodo(filter);
 }
-
-clearAll.addEventListener("click", () => {
-  isEditTask = false;
-  todos.splice(0, todos.length);
-  localStorage.setItem("todo-list", JSON.stringify(todos));
-  showTodo();
-});
-
-taskInput.addEventListener("keyup", e => {
-  let userTask = taskInput.value.trim();
-  if (e.key == "Enter" && userTask) {
-    if (!isEditTask) {
-      todos = !todos ? [] : todos;
-      let taskInfo = { name: userTask, status: "pending" };
-      todos.push(taskInfo);
-    } else {
-      isEditTask = false;
-      todos[editId].name = userTask;
-    }
-    taskInput.value = "";
-    localStorage.setItem("todo-list", JSON.stringify(todos));
-    showTodo(document.querySelector("span.active").id);
-  }
-});
