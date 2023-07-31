@@ -3,15 +3,11 @@ const filters = document.querySelectorAll(".filters span")
 const clearAll = document.querySelector(".clear-btn")
 const taskBox = document.querySelector(".task-box")
 
-let todos = JSON.parse(localStorage.getItem("todo-list"));
-
 window.addEventListener('load', () => {
   showTodo("all");
 })
 
 clearAll.addEventListener("click", () => {
-  todos.splice(0, todos.length);
-  localStorage.setItem("todo-list", JSON.stringify(todos));
   showTodo();
 });
 
@@ -28,13 +24,12 @@ taskInput.addEventListener("keyup", async (e) => {
   if (e.key == "Enter" && productName) {
     await createTodo(productName)
     taskInput.value = "";
-    localStorage.setItem("todo-list", JSON.stringify(todos));
     showTodo(document.querySelector("span.active").id);
   }
 });
 
 async function showTodo(filter) {
-  todos = await listTodos()
+  const todos = await listTodos()
   if (!todos || Array.isArray(todos) && todos.length === 0) {
     taskBox.innerHTML = '<span>Voce não possui compras pendentes</span>';
     return
@@ -97,19 +92,14 @@ function updateStatus(selectedTask) {
   let taskName = selectedTask.parentElement.lastElementChild;
   if (selectedTask.checked) {
     taskName.classList.add("checked");
-    todos[selectedTask.id].status = "completed";
   } else {
     taskName.classList.remove("checked");
-    todos[selectedTask.id].status = "pending";
   }
-  localStorage.setItem("todo-list", JSON.stringify(todos))
 }
 
 async function deleteTask(deleteId, filter) {
   await fetch(`http://localhost:3000/product/${deleteId}`, {
     method: 'DELETE',
   })
-  todos.splice(deleteId, 1);
-  localStorage.setItem("todo-list", JSON.stringify(todos));
   showTodo(filter);
 }
