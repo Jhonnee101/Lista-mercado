@@ -3,12 +3,13 @@ const filters = document.querySelectorAll(".filters span")
 const clearAll = document.querySelector(".clear-btn")
 const taskBox = document.querySelector(".task-box")
 
-window.addEventListener('load', () => {
-  showTodo("all");
+window.addEventListener('load', async () => {
+  await showTodo("all");
 })
 
-clearAll.addEventListener("click", () => {
-  showTodo();
+clearAll.addEventListener("click", async () => {
+  await deleteAll()
+  await showTodo("all");
 });
 
 filters.forEach(btn => {
@@ -78,6 +79,12 @@ async function listTodos() {
   }))
 }
 
+async function deleteAll() {
+  await fetch(`http://localhost:3000/products/`, {
+    method: 'DELETE',
+  })
+}
+
 function showMenu(selectedTask) {
   let menuDiv = selectedTask.parentElement.lastElementChild;
   menuDiv.classList.add("show");
@@ -101,5 +108,5 @@ async function deleteTask(deleteId, filter) {
   await fetch(`http://localhost:3000/product/${deleteId}`, {
     method: 'DELETE',
   })
-  showTodo(filter);
+  await showTodo(filter);
 }
